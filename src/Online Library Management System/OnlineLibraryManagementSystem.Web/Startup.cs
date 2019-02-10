@@ -10,6 +10,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using OnlineLibraryManagementSystem.Models;
 
     public class Startup
     {
@@ -32,10 +33,21 @@
                 .AddDbContext<OnlineLibraryManagementSystemDbContext>(options => options
                     .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
-            services
-                .AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<OnlineLibraryManagementSystemDbContext>();
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
+            })
+           .AddDefaultUI(UIFramework.Bootstrap4)
+           .AddEntityFrameworkStores<OnlineLibraryManagementSystemDbContext>()
+           .AddDefaultTokenProviders();
+
+            services.AddResponseCompression();
+
+            services.AddRouting(options => options.LowercaseUrls = true);
 
             services
                 .AddMvc()
@@ -56,6 +68,7 @@
             }
 
             app.UseHttpsRedirection();
+            app.UseResponseCompression();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

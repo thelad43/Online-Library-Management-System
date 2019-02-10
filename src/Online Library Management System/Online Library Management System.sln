@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLibraryManagementSyst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLibraryManagementSystem.Data", "OnlineLibraryManagementSystem.Data\OnlineLibraryManagementSystem.Data.csproj", "{7609AD66-553C-40A8-9541-E31C4A452B59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLibraryManagementSystem.Models", "OnlineLibraryManagementSystem.Models\OnlineLibraryManagementSystem.Models.csproj", "{DE97A35D-17E5-458F-9A7D-C1618F8B8E42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLibraryManagementSystem.Common", "OnlineLibraryManagementSystem.Common\OnlineLibraryManagementSystem.Common.csproj", "{91BC8C91-5F95-47B4-83A7-AFAA844156FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{7609AD66-553C-40A8-9541-E31C4A452B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7609AD66-553C-40A8-9541-E31C4A452B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7609AD66-553C-40A8-9541-E31C4A452B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE97A35D-17E5-458F-9A7D-C1618F8B8E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE97A35D-17E5-458F-9A7D-C1618F8B8E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE97A35D-17E5-458F-9A7D-C1618F8B8E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE97A35D-17E5-458F-9A7D-C1618F8B8E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91BC8C91-5F95-47B4-83A7-AFAA844156FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91BC8C91-5F95-47B4-83A7-AFAA844156FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91BC8C91-5F95-47B4-83A7-AFAA844156FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91BC8C91-5F95-47B4-83A7-AFAA844156FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,4 +13,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineLibraryManagementSystem.Models\OnlineLibraryManagementSystem.Models.csproj" />
+  </ItemGroup>
+
 </Project>
