@@ -1,4 +1,4 @@
-﻿namespace OnlineLibraryManagementSystem.Web.Data
+﻿namespace OnlineLibraryManagementSystem.Data
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;

@@ -28,8 +28,9 @@
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<OnlineLibraryManagementSystemDbContext>(options =>
-                options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
+            services
+                .AddDbContext<OnlineLibraryManagementSystemDbContext>(options => options
+                    .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
             services
                 .AddDefaultIdentity<IdentityUser>()

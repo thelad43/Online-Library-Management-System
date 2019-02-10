@@ -1,4 +1,4 @@
-﻿namespace OnlineLibraryManagementSystem.Web.Data.Migrations
+﻿namespace OnlineLibraryManagementSystem.Data.Migrations
 {
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Migrations;
