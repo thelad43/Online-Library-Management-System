@@ -18,6 +18,8 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
+        public int BorrowedTimes { get; set; }
+
         public string AuthorId { get; set; }
 
         public User Author { get; set; }

@@ -13,6 +13,8 @@
 
         public DbSet<Book> Books { get; set; }
 
+        public new DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder

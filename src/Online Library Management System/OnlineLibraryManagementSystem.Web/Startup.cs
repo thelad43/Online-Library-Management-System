@@ -1,6 +1,7 @@
 ﻿namespace OnlineLibraryManagementSystem.Web
 {
     using Data;
+    using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -23,11 +24,12 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            services
+                .Configure<CookiePolicyOptions>(options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
 
             services
                 .AddDbContext<OnlineLibraryManagementSystemDbContext>(options => options
@@ -48,6 +50,13 @@
             services.AddResponseCompression();
 
             services.AddRouting(options => options.LowercaseUrls = true);
+
+            services.AddDomainServices();
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             services
                 .AddMvc()

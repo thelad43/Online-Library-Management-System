@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineLibraryManagementSystem.Data\OnlineLibraryManagementSystem.Data.csproj" />
+    <ProjectReference Include="..\OnlineLibraryManagementSystem.Services\OnlineLibraryManagementSystem.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLibraryManagementSyst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLibraryManagementSystem.Common", "OnlineLibraryManagementSystem.Common\OnlineLibraryManagementSystem.Common.csproj", "{91BC8C91-5F95-47B4-83A7-AFAA844156FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLibraryManagementSystem.Services", "OnlineLibraryManagementSystem.Services\OnlineLibraryManagementSystem.Services.csproj", "{64BAA0DA-4BD1-4E07-BBA6-F794C035E3FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{91BC8C91-5F95-47B4-83A7-AFAA844156FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91BC8C91-5F95-47B4-83A7-AFAA844156FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91BC8C91-5F95-47B4-83A7-AFAA844156FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64BAA0DA-4BD1-4E07-BBA6-F794C035E3FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64BAA0DA-4BD1-4E07-BBA6-F794C035E3FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64BAA0DA-4BD1-4E07-BBA6-F794C035E3FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64BAA0DA-4BD1-4E07-BBA6-F794C035E3FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
