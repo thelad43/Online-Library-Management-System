@@ -1,0 +1,21 @@
+﻿@model AdminUsersListingModel
+
+@{
+    ViewData["Title"] = "Add an Author";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<br />
+<br />
+
+<form asp-area="Admin" asp-action="AddAuthor" method="post">
+    <div class="row">
+        <div class="col-md-7">
+            <select name="userId" asp-items="Model.Users" class="form-control"></select>
+        </div>
+        <div class="col-md-5">
+            <input class="btn btn-sm btn-primary" type="submit" value="Add Author" />
+        </div>
+    </div>
+</form>

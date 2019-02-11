@@ -10,5 +10,10 @@
 
         public const string AdministratorRole = "Administrator";
         public const string AuthorRole = "Author";
+
+        public const string AdminArea = "Admin";
+
+        public const string TempDataSuccessMessageKey = "SuccessMessage";
+        public const string TempDataErrorMessageKey = "ErrorMessage";
     }
 }

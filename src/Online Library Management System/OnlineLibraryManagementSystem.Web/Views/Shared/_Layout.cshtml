@@ -29,6 +29,14 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
+
+                        @if (User.IsInRole(GlobalConstants.AdministratorRole))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Users" asp-action="AddAuthor">Add Author</a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
@@ -40,6 +48,21 @@
     <div class="container">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
+
+            @if (TempData.ContainsKey(GlobalConstants.TempDataSuccessMessageKey))
+            {
+                <div class="alert alert-success">
+                    @TempData[GlobalConstants.TempDataSuccessMessageKey]
+                </div>
+            }
+
+            @if (TempData.ContainsKey(GlobalConstants.TempDataErrorMessageKey))
+            {
+                <div class="alert alert-danger">
+                    @TempData[GlobalConstants.TempDataErrorMessageKey]
+                </div>
+            }
+
             @RenderBody()
         </main>
     </div>

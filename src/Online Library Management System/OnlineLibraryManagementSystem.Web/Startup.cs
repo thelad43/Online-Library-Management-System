@@ -1,5 +1,6 @@
 ﻿namespace OnlineLibraryManagementSystem.Web
 {
+    using Common.Mapping;
     using Data;
     using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Builder;
@@ -12,6 +13,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using OnlineLibraryManagementSystem.Models;
+    using Services.Models;
 
     public class Startup
     {
@@ -53,6 +55,8 @@
 
             services.AddDomainServices();
 
+            AutoMapperConfig.RegisterMappings(typeof(AuthorServiceModel).Assembly);
+
             services.AddMvc(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
@@ -87,6 +91,10 @@
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
