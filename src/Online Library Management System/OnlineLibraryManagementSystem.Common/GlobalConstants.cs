@@ -7,5 +7,8 @@
 
         public const int DescriptionMinLength = 10;
         public const int DescriptionMaxLength = 100;
+
+        public const string AdministratorRole = "Administrator";
+        public const string AuthorRole = "Author";
     }
 }
