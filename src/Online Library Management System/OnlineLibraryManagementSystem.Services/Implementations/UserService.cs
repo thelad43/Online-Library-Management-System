@@ -39,9 +39,16 @@
         }
 
         public int GetAuthorsCount()
-            => this.db.Users.Where(u => u.AuthorBooks.Any()).Count();
+            => this.db
+                .Users
+                .Where(u => u.AuthorBooks.Any())
+                .Count();
 
         public async Task<IEnumerable<AuthorServiceModel>> GetUsers()
-            => await this.db.Users.Where(u => !u.AuthorBooks.Any()).To<AuthorServiceModel>().ToListAsync();
+            => await this.db
+                .Users
+                .Where(u => !u.AuthorBooks.Any())
+                .To<AuthorServiceModel>()
+                .ToListAsync();
     }
 }
