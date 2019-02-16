@@ -1,4 +1,4 @@
-﻿namespace OnlineLibraryManagementSystem.Services.Models
+﻿namespace OnlineLibraryManagementSystem.Services.Models.Books
 {
     using AutoMapper;
     using Common.Mapping;

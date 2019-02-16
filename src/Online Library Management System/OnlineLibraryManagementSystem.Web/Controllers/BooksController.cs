@@ -23,10 +23,18 @@
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int currentPage = 1)
         {
-            // TODO: List books (with pagination)
-            return null;
+            var books = await this.books.GetAllBooks(currentPage);
+
+            var model = new BooksListingViewModel
+            {
+                Books = books,
+                CurrentPage = currentPage,
+                AllBooksCount = this.books.GetBooksCount()
+            };
+
+            return View(model);
         }
 
         [HttpGet]

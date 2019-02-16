@@ -4,8 +4,35 @@
     ViewData["Title"] = $"Details for {Model.Title} book";
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<br />
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<br />
+<br />
 
 <div>
-
+    <h5>This book was borrowed @Model.BorrowedTimes times.</h5>
 </div>
+
+<br />
+
+<div>
+    <h4>@Model.Title  book is added by: <a asp-area="" asp-controller="" asp-action="" asp-route-id=""><b>@Model.Author</b></a></h4>
+</div>
+
+<br />
+
+<div>
+    <h4>Desccription of the book:</h4>
+    <p><h6>@Model.Description</h6></p>
+</div>
+
+<br />
+
+@if (Model.Borrower != null)
+{
+    <div>
+        This book is currently borrowed by <a asp-area="" asp-controller="" asp-action="" asp-route-id="">@Model.Borrower</a>
+    </div>
+}

@@ -1,0 +1,76 @@
+﻿@model BooksListingViewModel
+
+@{
+    ViewData["Title"] = "All Books in this library";
+    var reminder = 0;
+}
+
+<br />
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<br />
+<br />
+
+@foreach (var book in Model.Books)
+{
+    <div class="row text-center">
+        @if (reminder++ % 2 == 0)
+        {
+            <div class="col-md-6">
+                Title: <b>@book.Title</b>
+                <br />
+                Description: <b>@book.Description</b>
+                <a asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-light">Details</a>
+            </div>
+        }
+        else
+        {
+            <div class="col-md-6" style="margin-left:auto">
+                Title: <b>@book.Title</b>
+                <br />
+                Description: <b>@book.Description</b>
+                <a asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-light">Details</a>
+            </div>
+        }
+
+        <br />
+    </div>
+}
+
+<br />
+
+@if (Model.CurrentPage == Model.TotalPages)
+{
+    <br />
+    <br />
+}
+
+<div class="text-xs-center">
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.CurrentPage == Model.PreviousPage ? "disabled" : "active")">
+                <a asp-area="" asp-controller="Books" asp-action="Index" asp-route-currentPage="@(Model.PreviousPage)" class="page-link" tabindex="-1">Previous</a>
+            </li>
+
+            @for (var i = 1; i <= @Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a asp-area="" asp-controller="Books" asp-action="Index" asp-route-currentPage="@i" class="page-link">@i</a>
+                </li>
+
+                @*<li class="page-item"><a class="page-link" href="#">1</a></li>*@
+
+                @*<li class="page-item active">
+                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                    </li>*@
+
+                @*<li class="page-item"><a class="page-link" href="#">3</a></li>*@
+            }
+
+            <li class="page-item @(Model.CurrentPage == Model.NextPage ? "disabled" : "active")">
+                <a asp-area="" asp-controller="Books" asp-action="Index" asp-route-currentPage="@(Model.NextPage)" class="page-link">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
