@@ -1,15 +1,15 @@
 ﻿namespace OnlineLibraryManagementSystem.Services
 {
-    using Models;
+    using Models.Authors;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IUserService
     {
-        int GetAuthorsCount();
+        Task<int> GetAuthorsCountAsync();
 
-        Task<IEnumerable<AuthorServiceModel>> GetUsers();
+        Task<IEnumerable<AuthorServiceModel>> GetUsersAsync();
 
-        Task<string> AddAuthor(string userId);
+        Task<string> AddAuthorAsync(string userId);
     }
 }

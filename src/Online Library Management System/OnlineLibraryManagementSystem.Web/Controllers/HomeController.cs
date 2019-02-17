@@ -5,6 +5,7 @@
     using OnlineLibraryManagementSystem.Services;
     using OnlineLibraryManagementSystem.Web.Models.Books;
     using System.Diagnostics;
+    using System.Threading.Tasks;
 
     public class HomeController : Controller
     {
@@ -17,11 +18,11 @@
             this.books = books;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var authorsCount = this.users.GetAuthorsCount();
-            var booksCount = this.books.GetBooksCount();
-            var borrowedBooksCount = this.books.GetBorrowedBooksCount();
+            var authorsCount = await this.users.GetAuthorsCountAsync();
+            var booksCount = await this.books.GetBooksCountAsync();
+            var borrowedBooksCount = await this.books.GetBorrowedBooksCountAsync();
 
             var model = new HomeIndexViewModel
             {

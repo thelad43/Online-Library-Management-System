@@ -13,7 +13,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using OnlineLibraryManagementSystem.Models;
-    using Services.Models;
+    using Services.Models.Authors;
 
     public class Startup
     {

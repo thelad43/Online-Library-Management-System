@@ -17,5 +17,6 @@
         public const string TempDataErrorMessageKey = "ErrorMessage";
 
         public const int BooksOnPage = 10;
+        public const int AuthorsOnPage = 20;
     }
 }

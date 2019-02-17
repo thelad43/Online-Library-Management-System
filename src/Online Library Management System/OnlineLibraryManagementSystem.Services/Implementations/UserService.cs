@@ -1,12 +1,12 @@
 ﻿namespace OnlineLibraryManagementSystem.Services.Implementations
 {
+    using Common;
     using Common.Mapping;
     using Data;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using Models;
-    using OnlineLibraryManagementSystem.Common;
     using OnlineLibraryManagementSystem.Models;
+    using Services.Models.Authors;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,7 +24,7 @@
             this.userManager = userManager;
         }
 
-        public async Task<string> AddAuthor(string userId)
+        public async Task<string> AddAuthorAsync(string userId)
         {
             var user = await this.userManager.FindByIdAsync(userId);
 
@@ -38,13 +38,13 @@
             return user.UserName;
         }
 
-        public int GetAuthorsCount()
-            => this.db
+        public async Task<int> GetAuthorsCountAsync()
+            => await this.db
                 .Users
                 .Where(u => u.AuthorBooks.Any())
-                .Count();
+                .CountAsync();
 
-        public async Task<IEnumerable<AuthorServiceModel>> GetUsers()
+        public async Task<IEnumerable<AuthorServiceModel>> GetUsersAsync()
             => await this.db
                 .Users
                 .Where(u => !u.AuthorBooks.Any())

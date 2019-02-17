@@ -6,7 +6,9 @@
     using Models.Books;
     using OnlineLibraryManagementSystem.Models;
     using OnlineLibraryManagementSystem.Web.Infrastructure.Extensions;
+    using OnlineLibraryManagementSystem.Web.Models;
     using Services;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using static Common.GlobalConstants;
@@ -25,13 +27,20 @@
         [HttpGet]
         public async Task<IActionResult> Index(int currentPage = 1)
         {
-            var books = await this.books.GetAllBooks(currentPage);
+            var books = await this.books.GetAllAsync(currentPage);
+
+            var page = new PageViewModel
+            {
+                CurrentPage = currentPage,
+                Controller = "Books",
+                Action = "Index",
+                Count = await this.books.GetBooksCountAsync()
+            };
 
             var model = new BooksListingViewModel
             {
                 Books = books,
-                CurrentPage = currentPage,
-                AllBooksCount = this.books.GetBooksCount()
+                Page = page
             };
 
             return View(model);
@@ -55,7 +64,7 @@
 
             var user = await this.userManager.GetUserAsync(User);
 
-            await this.books.Add(model.Title, model.Description, user.Id);
+            await this.books.AddAsync(model.Title, model.Description, user.Id);
 
             TempData.AddSuccessMessage($"Successfully added book {model.Title} by {user.UserName}");
 
@@ -63,9 +72,34 @@
         }
 
         [HttpGet]
+        public async Task<IActionResult> ByAuthor(string id, int currentPage = 1)
+        {
+            var books = await this.books.ByAuthorAsync(id, currentPage);
+
+            var page = new PageViewModel
+            {
+                CurrentPage = currentPage,
+                Controller = "Books",
+                Action = "ByAuthor",
+                Count = await this.books.GetBooksByAuthorCountAsync(id)
+            };
+
+            var author = await userManager.FindByIdAsync(books.First().AuthorId);
+
+            var model = new BooksByAuthorListingViewModel
+            {
+                Books = books,
+                Page = page,
+                Author = author.UserName
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var book = await this.books.ById(id);
+            var book = await this.books.ByIdAsync(id);
 
             return View(book);
         }

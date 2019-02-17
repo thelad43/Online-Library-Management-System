@@ -20,7 +20,7 @@
             this.db = db;
         }
 
-        public async Task Add(string title, string description, string id)
+        public async Task AddAsync(string title, string description, string id)
         {
             var book = new Book
             {
@@ -33,14 +33,24 @@
             await this.db.SaveChangesAsync();
         }
 
-        public async Task<BookServiceModel> ById(int id)
+        public async Task<IEnumerable<BookServiceModel>> ByAuthorAsync(string id, int page)
+            => await this.db
+                .Books
+                .Where(b => b.AuthorId == id)
+                .OrderBy(b => b.BorrowedTimes)
+                .Skip((page - 1) * BooksOnPage)
+                .Take(BooksOnPage)
+                .To<BookServiceModel>()
+                .ToListAsync();
+
+        public async Task<BookServiceModel> ByIdAsync(int id)
             => await this.db
                 .Books
                 .Where(b => b.Id == id)
                 .To<BookServiceModel>()
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<ShortBookServiceModel>> GetAllBooks(int page)
+        public async Task<IEnumerable<ShortBookServiceModel>> GetAllAsync(int page)
             => await this.db
                 .Books
                 .OrderBy(b => b.Id)
@@ -49,15 +59,21 @@
                 .To<ShortBookServiceModel>()
                 .ToListAsync();
 
-        public int GetBooksCount()
-            => this.db
+        public async Task<int> GetBooksByAuthorCountAsync(string id)
+            => await this.db
                 .Books
-                .Count();
+                .Where(b => b.AuthorId == id)
+                .CountAsync();
 
-        public int GetBorrowedBooksCount()
-            => this.db
+        public async Task<int> GetBooksCountAsync()
+            => await this.db
+                .Books
+                .CountAsync();
+
+        public async Task<int> GetBorrowedBooksCountAsync()
+            => await this.db
                 .Books
                 .Where(b => b.BorrowerId != null)
-                .Count();
+                .CountAsync();
     }
 }

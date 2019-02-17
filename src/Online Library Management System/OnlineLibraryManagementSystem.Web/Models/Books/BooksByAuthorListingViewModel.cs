@@ -3,10 +3,12 @@
     using Services.Models.Books;
     using System.Collections.Generic;
 
-    public class BooksListingViewModel
+    public class BooksByAuthorListingViewModel
     {
+        public string Author { get; set; }
+
         public PageViewModel Page { get; set; }
 
-        public IEnumerable<ShortBookServiceModel> Books { get; set; }
+        public IEnumerable<BookServiceModel> Books { get; set; }
     }
 }

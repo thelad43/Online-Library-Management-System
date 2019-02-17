@@ -18,13 +18,13 @@
 <br />
 
 <div>
-    <h4>@Model.Title  book is added by: <a asp-area="" asp-controller="" asp-action="" asp-route-id=""><b>@Model.Author</b></a></h4>
+    <h4>@Model.Title  book is added by: <a asp-area="" asp-controller="Books" asp-action="ByAuthor" asp-route-id="@Model.AuthorId"><b>@Model.Author</b></a></h4>
 </div>
 
 <br />
 
 <div>
-    <h4>Desccription of the book:</h4>
+    <h4>Description of the book:</h4>
     <p><h6>@Model.Description</h6></p>
 </div>
 
@@ -33,6 +33,6 @@
 @if (Model.Borrower != null)
 {
     <div>
-        This book is currently borrowed by <a asp-area="" asp-controller="" asp-action="" asp-route-id="">@Model.Borrower</a>
+        This book is currently borrowed by <a asp-area="" asp-controller="Books" asp-action="ByAuthor" asp-route-id="@Model.BorrowerId">@Model.Borrower</a>
     </div>
 }

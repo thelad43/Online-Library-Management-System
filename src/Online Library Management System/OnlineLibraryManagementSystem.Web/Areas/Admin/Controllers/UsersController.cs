@@ -21,7 +21,7 @@
         [HttpGet]
         public async Task<IActionResult> AddAuthor()
         {
-            var users = await this.users.GetUsers();
+            var users = await this.users.GetUsersAsync();
 
             var model = new AdminUsersListingModel
             {
@@ -38,7 +38,7 @@
         [HttpPost]
         public async Task<IActionResult> AddAuthor(string userId)
         {
-            var userName = await this.users.AddAuthor(userId);
+            var userName = await this.users.AddAuthorAsync(userId);
 
             TempData.AddSuccessMessage($"Successfully added role 'Author' to user {userName}.");
 

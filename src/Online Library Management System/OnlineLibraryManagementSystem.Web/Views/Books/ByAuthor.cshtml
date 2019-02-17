@@ -1,7 +1,7 @@
-﻿@model BooksListingViewModel
+﻿@model BooksByAuthorListingViewModel
 
 @{
-    ViewData["Title"] = "All Books in this library";
+    ViewData["Title"] = $"Books by {Model.Author}";
     var reminder = 0;
 }
 

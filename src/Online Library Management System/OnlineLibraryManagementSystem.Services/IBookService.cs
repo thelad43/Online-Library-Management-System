@@ -6,14 +6,18 @@
 
     public interface IBookService
     {
-        int GetBooksCount();
+        Task<int> GetBooksCountAsync();
 
-        int GetBorrowedBooksCount();
+        Task<int> GetBorrowedBooksCountAsync();
 
-        Task<IEnumerable<ShortBookServiceModel>> GetAllBooks(int page);
+        Task<IEnumerable<ShortBookServiceModel>> GetAllAsync(int page);
 
-        Task Add(string title, string description, string id);
+        Task AddAsync(string title, string description, string id);
 
-        Task<BookServiceModel> ById(int id);
+        Task<BookServiceModel> ByIdAsync(int id);
+
+        Task<IEnumerable<BookServiceModel>> ByAuthorAsync(string id, int page);
+
+        Task<int> GetBooksByAuthorCountAsync(string id);
     }
 }
