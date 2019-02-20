@@ -32,20 +32,23 @@
 
                         @if (User.IsInRole(GlobalConstants.AdministratorRole))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Users" asp-action="AddAuthor">Add Author</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Users" asp-action="AddAuthor">Add Author</a>
+                        </li>
                         }
 
                         @if (User.IsInRole(GlobalConstants.AdministratorRole) || User.IsInRole(GlobalConstants.AuthorRole))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
+                        </li>
                         }
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="MyBorrowedBooks">Borrowed</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -61,16 +64,16 @@
 
             @if (TempData.ContainsKey(GlobalConstants.TempDataSuccessMessageKey))
             {
-                <div class="alert alert-success">
-                    @TempData[GlobalConstants.TempDataSuccessMessageKey]
-                </div>
+            <div class="alert alert-success">
+                @TempData[GlobalConstants.TempDataSuccessMessageKey]
+            </div>
             }
 
             @if (TempData.ContainsKey(GlobalConstants.TempDataErrorMessageKey))
             {
-                <div class="alert alert-danger">
-                    @TempData[GlobalConstants.TempDataErrorMessageKey]
-                </div>
+            <div class="alert alert-danger">
+                @TempData[GlobalConstants.TempDataErrorMessageKey]
+            </div>
             }
 
             @RenderBody()

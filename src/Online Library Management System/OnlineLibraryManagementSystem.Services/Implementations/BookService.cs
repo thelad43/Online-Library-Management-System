@@ -5,6 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Models.Books;
     using OnlineLibraryManagementSystem.Models;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -33,6 +34,38 @@
             await this.db.SaveChangesAsync();
         }
 
+        public async Task BorrowAsync(int id, string userName)
+        {
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            var book = await this.db.Books.FindAsync(id);
+
+            if (user == null || book == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            // This book is already borrowed
+            if (book.BorrowerId != null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            book.BorrowerId = user.Id;
+            book.BorrowedTimes++;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<BorrowedBookServiceModel>> BorrowedAsync(int page)
+            => await this.db
+                .Books
+                .Where(b => b.BorrowerId != null)
+                .OrderBy(b => b.BorrowedTimes)
+                .Skip((page - 1) * BooksOnPage)
+                .Take(BooksOnPage)
+                .To<BorrowedBookServiceModel>()
+                .ToListAsync();
+
         public async Task<IEnumerable<BookServiceModel>> ByAuthorAsync(string id, int page)
             => await this.db
                 .Books
@@ -50,13 +83,13 @@
                 .To<BookServiceModel>()
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<ShortBookServiceModel>> GetAllAsync(int page)
+        public async Task<IEnumerable<BookDetailsServiceModel>> GetAllAsync(int page)
             => await this.db
                 .Books
                 .OrderBy(b => b.Id)
                 .Skip((page - 1) * BooksOnPage)
                 .Take(BooksOnPage)
-                .To<ShortBookServiceModel>()
+                .To<BookDetailsServiceModel>()
                 .ToListAsync();
 
         public async Task<int> GetBooksByAuthorCountAsync(string id)
@@ -75,5 +108,58 @@
                 .Books
                 .Where(b => b.BorrowerId != null)
                 .CountAsync();
+
+        public async Task<int> GetMyBorrowedBooksCountAsync(string userName)
+        {
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var count = await this.db
+                .Books
+                .Where(b => b.BorrowerId == user.Id)
+                .CountAsync();
+
+            return count;
+        }
+
+        public async Task<IEnumerable<BorrowedBookServiceModel>> MyBorrowedAsync(string userName, int page)
+        {
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var books = await this.db
+                .Books
+                .Where(b => b.BorrowerId == user.Id)
+                .OrderBy(b => b.BorrowedTimes)
+                .Skip((page - 1) * BooksOnPage)
+                .Take(BooksOnPage)
+                .To<BorrowedBookServiceModel>()
+                .ToListAsync();
+
+            return books;
+        }
+
+        public async Task ReturnAsync(int id, string userName)
+        {
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            var book = await this.db.Books.FindAsync(id);
+
+            if (user == null || book == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            book.BorrowerId = null;
+
+            await this.db.SaveChangesAsync();
+        }
     }
 }

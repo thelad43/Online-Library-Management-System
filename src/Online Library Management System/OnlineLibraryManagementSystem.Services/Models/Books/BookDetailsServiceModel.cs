@@ -4,7 +4,7 @@
     using Common.Mapping;
     using OnlineLibraryManagementSystem.Models;
 
-    public class ShortBookServiceModel : IMapFrom<Book>, IHaveCustomMappings
+    public class BookDetailsServiceModel : IMapFrom<Book>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -21,8 +21,11 @@
             }
         }
 
+        public bool IsBorrowed { get; set; }
+
         public void CreateMappings(IMapperConfigurationExpression configuration)
-         => configuration.CreateMap<Book, ShortBookServiceModel>()
-                .ForMember(src => src.FullDescription, cfg => cfg.MapFrom(dest => dest.Description));
+         => configuration.CreateMap<Book, BookDetailsServiceModel>()
+                .ForMember(src => src.FullDescription, cfg => cfg.MapFrom(dest => dest.Description))
+                .ForMember(src => src.IsBorrowed, cfg => cfg.MapFrom(dest => dest.BorrowerId != null));
     }
 }

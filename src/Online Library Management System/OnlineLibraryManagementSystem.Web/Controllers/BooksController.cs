@@ -37,7 +37,7 @@
                 Count = await this.books.GetBooksCountAsync()
             };
 
-            var model = new BooksListingViewModel
+            var model = new AllBooksListingViewModel
             {
                 Books = books,
                 Page = page
@@ -68,7 +68,7 @@
 
             TempData.AddSuccessMessage($"Successfully added book {model.Title} by {user.UserName}");
 
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToActionExtension(nameof(Index));
         }
 
         [HttpGet]
@@ -84,7 +84,7 @@
                 Count = await this.books.GetBooksByAuthorCountAsync(id)
             };
 
-            var author = await userManager.FindByIdAsync(books.First().AuthorId);
+            var author = await this.userManager.FindByIdAsync(books.First().AuthorId);
 
             var model = new BooksByAuthorListingViewModel
             {
@@ -102,6 +102,75 @@
             var book = await this.books.ByIdAsync(id);
 
             return View(book);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Borrow(int id)
+        {
+            var userName = User.Identity.Name;
+
+            await this.books.BorrowAsync(id, userName);
+
+            TempData.AddSuccessMessage("Successfully borrowed a book.");
+
+            return this.RedirectToActionExtension(nameof(MyBorrowedBooks));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Return(int id)
+        {
+            var userName = User.Identity.Name;
+
+            await this.books.ReturnAsync(id, userName);
+
+            TempData.AddSuccessMessage("Successfully returned a book.");
+
+            return this.RedirectToActionExtension(nameof(MyBorrowedBooks));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MyBorrowedBooks(int currentPage = 1)
+        {
+            var userName = User.Identity.Name;
+
+            var books = await this.books.MyBorrowedAsync(userName, currentPage);
+
+            var page = new PageViewModel
+            {
+                CurrentPage = currentPage,
+                Controller = "Books",
+                Action = nameof(MyBorrowedBooks),
+                Count = await this.books.GetMyBorrowedBooksCountAsync(userName)
+            };
+
+            var model = new BorrowedBooksListingViewModel
+            {
+                Page = page,
+                Books = books
+            };
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Borrowed(int currentPage = 1)
+        {
+            var books = await this.books.BorrowedAsync(currentPage);
+
+            var page = new PageViewModel
+            {
+                CurrentPage = currentPage,
+                Controller = "Books",
+                Action = nameof(Borrowed),
+                Count = await this.books.GetBorrowedBooksCountAsync()
+            };
+
+            var model = new BorrowedBooksListingViewModel
+            {
+                Page = page,
+                Books = books
+            };
+
+            return View(model);
         }
     }
 }

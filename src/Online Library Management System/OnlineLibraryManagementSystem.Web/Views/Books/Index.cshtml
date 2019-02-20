@@ -1,4 +1,4 @@
-﻿@model BooksListingViewModel
+﻿@model AllBooksListingViewModel
 
 @{
     ViewData["Title"] = "All Books in this library";
@@ -17,12 +17,16 @@
     <div class="row text-center">
         @if (reminder++ % 2 == 0)
         {
-            <div class="col-md-6">
-                Title: <b>@book.Title</b>
-                <br />
-                Description: <b>@book.Description</b>
-                <a asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-light">Details</a>
-            </div>
+        <div class="col-md-6">
+            Title: <b>@book.Title</b>
+            <br />
+            Description: <b>@book.Description</b>
+            <a asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-info">Details</a>
+            @if (!book.IsBorrowed)
+            {
+                <a asp-area="" asp-controller="Books" asp-action="Borrow" asp-route-id="@book.Id" class="btn btn-success">Borrow</a>
+            }
+        </div>
         }
         else
         {
@@ -30,7 +34,11 @@
                 Title: <b>@book.Title</b>
                 <br />
                 Description: <b>@book.Description</b>
-                <a asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-light">Details</a>
+                <a asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-info">Details</a>
+                @if (!book.IsBorrowed)
+                {
+                    <a asp-area="" asp-controller="Books" asp-action="Borrow" asp-route-id="@book.Id" class="btn btn-success">Borrow</a>
+                }
             </div>
         }
 

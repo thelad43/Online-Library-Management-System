@@ -42,8 +42,9 @@
 
             TempData.AddSuccessMessage($"Successfully added role 'Author' to user {userName}.");
 
-            return RedirectToAction(nameof(HomeController.Index),
-                nameof(HomeController).Replace("Controller", string.Empty),
+            return this.RedirectToActionExtension(
+                nameof(HomeController.Index),
+                nameof(HomeController),
                 new { area = string.Empty });
         }
     }

@@ -1,0 +1,43 @@
+﻿@model BorrowedBooksListingViewModel
+
+@{
+    ViewData["Title"] = "All Borrowed Books in this library";
+    var i = 0;
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Book Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model.Books)
+        {
+            <tr>
+                <th scope="row">@(++i)</th>
+                <td>@book.Title</td>
+                <td>
+                    <a class="btn btn-info" asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+@if (Model.Page.CurrentPage >= Model.Page.TotalPages)
+{
+    <br />
+    <br />
+}
+
+@if (Model.Page.TotalPages > 1)
+{
+    <partial name="_PaginationPartial" for="Page" />
+}
