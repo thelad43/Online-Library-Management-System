@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;
 
-    public class AdminUsersListingModel
+    public class UsersFormListingAdminModel
     {
         public IEnumerable<SelectListItem> Users { get; set; }
     }

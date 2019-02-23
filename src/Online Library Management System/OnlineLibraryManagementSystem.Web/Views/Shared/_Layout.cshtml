@@ -26,29 +26,47 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                @if (User.IsInRole(GlobalConstants.AdministratorRole))
+                {
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="AddAuthor">Add Author</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Index">All Books</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Borrowed">All Borrowed</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">All Users</a>
+                            </div>
+                        </li>
+                    </ul>
+                }
+
+                @if (User.IsInRole(GlobalConstants.AuthorRole))
+                {
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Books
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
+                            </div>
+                        </li>
+                    </ul>
+                }
+               
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-
-                        @if (User.IsInRole(GlobalConstants.AdministratorRole))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Users" asp-action="AddAuthor">Add Author</a>
-                            </li>
-                        }
-
-                        @if (User.IsInRole(GlobalConstants.AdministratorRole) || User.IsInRole(GlobalConstants.AuthorRole))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
-                            </li>
-                        }
-
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="MyBorrowedBooks">Borrowed</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="MyBorrowedBooks">My Borrowed</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

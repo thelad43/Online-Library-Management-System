@@ -18,5 +18,6 @@
 
         public const int BooksOnPage = 10;
         public const int AuthorsOnPage = 20;
+        public const int UsersCountOnPage = 15;
     }
 }

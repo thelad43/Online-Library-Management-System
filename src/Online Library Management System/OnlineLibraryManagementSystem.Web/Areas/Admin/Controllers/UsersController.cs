@@ -6,6 +6,7 @@
     using OnlineLibraryManagementSystem.Web.Areas.Admin.Models;
     using OnlineLibraryManagementSystem.Web.Controllers;
     using OnlineLibraryManagementSystem.Web.Infrastructure.Extensions;
+    using OnlineLibraryManagementSystem.Web.Models;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -19,11 +20,35 @@
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index(int currentPage = 1)
+        {
+            var users = await this.users.GetUsersAsync(currentPage);
+
+            users = await this.users.SetRoleToModelAsync(users);
+
+            var page = new PageViewModel
+            {
+                CurrentPage = currentPage,
+                Controller = nameof(UsersController),
+                Action = nameof(Index),
+                Count = await this.users.GetUsersCountAsync()
+            };
+
+            var model = new AllUsersListingAdminModel
+            {
+                Page = page,
+                Users = users
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AddAuthor()
         {
             var users = await this.users.GetUsersAsync();
 
-            var model = new AdminUsersListingModel
+            var model = new UsersFormListingAdminModel
             {
                 Users = users.Select(u => new SelectListItem
                 {
