@@ -1,12 +1,12 @@
 ﻿namespace OnlineLibraryManagementSystem.Web.Controllers
 {
+    using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
     using Models.Books;
     using OnlineLibraryManagementSystem.Models;
-    using OnlineLibraryManagementSystem.Web.Infrastructure.Extensions;
-    using OnlineLibraryManagementSystem.Web.Models;
     using Services;
     using System.Linq;
     using System.Threading.Tasks;
@@ -32,8 +32,8 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
-                Controller = "Books",
-                Action = "Index",
+                Controller = nameof(BooksController),
+                Action = nameof(Index),
                 Count = await this.books.GetBooksCountAsync()
             };
 
@@ -64,11 +64,16 @@
 
             var user = await this.userManager.GetUserAsync(User);
 
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             await this.books.AddAsync(model.Title, model.Description, user.Id);
 
             TempData.AddSuccessMessage($"Successfully added book {model.Title} by {user.UserName}");
 
-            return this.RedirectToActionExtension(nameof(Index));
+            return this.RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -79,12 +84,17 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
-                Controller = "Books",
-                Action = "ByAuthor",
+                Controller = nameof(BooksController),
+                Action = nameof(ByAuthor),
                 Count = await this.books.GetBooksByAuthorCountAsync(id)
             };
 
-            var author = await this.userManager.FindByIdAsync(books.First().AuthorId);
+            var author = await this.userManager.FindByIdAsync(books?.FirstOrDefault()?.AuthorId);
+
+            if (author == null)
+            {
+                return NotFound();
+            }
 
             var model = new BooksByAuthorListingViewModel
             {
@@ -98,36 +108,45 @@
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
-        {
-            var book = await this.books.ByIdAsync(id);
+            => View(await this.books.ByIdAsync(id));
 
-            return View(book);
-        }
-
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Borrow(int id)
         {
             var userName = User.Identity.Name;
 
-            await this.books.BorrowAsync(id, userName);
+            var book = await this.books.BorrowAsync(id, userName);
 
-            TempData.AddSuccessMessage("Successfully borrowed a book.");
+            if (book == null)
+            {
+                return NotFound();
+            }
 
-            return this.RedirectToActionExtension(nameof(MyBorrowedBooks));
+            TempData.AddSuccessMessage($"Successfully borrowed {book} book.");
+
+            return RedirectToAction(nameof(MyBorrowedBooks));
         }
 
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Return(int id)
         {
             var userName = User.Identity.Name;
 
-            await this.books.ReturnAsync(id, userName);
+            var book = await this.books.ReturnAsync(id, userName);
 
-            TempData.AddSuccessMessage("Successfully returned a book.");
+            if (book == null)
+            {
+                return NotFound();
+            }
 
-            return this.RedirectToActionExtension(nameof(MyBorrowedBooks));
+            TempData.AddSuccessMessage($"Successfully returned {book} book to the library.");
+
+            return RedirectToAction(nameof(MyBorrowedBooks));
         }
 
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> MyBorrowedBooks(int currentPage = 1)
         {
@@ -138,7 +157,7 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
-                Controller = "Books",
+                Controller = nameof(BooksController),
                 Action = nameof(MyBorrowedBooks),
                 Count = await this.books.GetMyBorrowedBooksCountAsync(userName)
             };
@@ -152,6 +171,7 @@
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Borrowed(int currentPage = 1)
         {
             var books = await this.books.BorrowedAsync(currentPage);
@@ -159,7 +179,7 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
-                Controller = "Books",
+                Controller = nameof(BooksController),
                 Action = nameof(Borrowed),
                 Count = await this.books.GetBorrowedBooksCountAsync()
             };

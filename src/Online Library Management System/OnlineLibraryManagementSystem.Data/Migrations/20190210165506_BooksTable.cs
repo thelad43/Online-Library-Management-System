@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace OnlineLibraryManagementSystem.Data.Migrations
+﻿namespace OnlineLibraryManagementSystem.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class BooksTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -24,8 +24,9 @@
     <tbody>
         @foreach (var author in Model.Authors)
         {
+            i++;
             <tr>
-                <th scope="row">@(++i)</th>
+                <th scope="row">@((Model.Page.CurrentPage - 1) * 10 + i)</th>
                 <td>@author.Name</td>
                 <td>@author.BooksCount</td>
                 <td>

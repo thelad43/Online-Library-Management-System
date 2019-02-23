@@ -6,17 +6,17 @@
     {
         private const string Controller = "Controller";
 
-        public static RedirectToActionResult RedirectToActionExtension(this Controller controller, string actionName)
+        public static RedirectToActionResult RedirectToAction(this Controller controller, string actionName)
         {
             return controller.RedirectToAction(actionName);
         }
 
-        public static RedirectToActionResult RedirectToActionExtension(this Controller controller, string actionName, string controllerName)
+        public static RedirectToActionResult RedirectToAction(this Controller controller, string actionName, string controllerName)
         {
             return controller.RedirectToAction(actionName, controllerName.Replace(Controller, string.Empty));
         }
 
-        public static RedirectToActionResult RedirectToActionExtension(this Controller controller, string actionName, string controllerName, object routeValues)
+        public static RedirectToActionResult RedirectToAction(this Controller controller, string actionName, string controllerName, object routeValues)
         {
             return controller.RedirectToAction(actionName, controllerName.Replace(Controller, string.Empty), routeValues);
         }

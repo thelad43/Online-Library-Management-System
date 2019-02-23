@@ -20,13 +20,13 @@
 
         Task<int> GetBooksByAuthorCountAsync(string id);
 
-        Task BorrowAsync(int id, string userName);
+        Task<string> BorrowAsync(int id, string userName);
 
         Task<IEnumerable<BorrowedBookServiceModel>> MyBorrowedAsync(string userName, int page);
 
         Task<int> GetMyBorrowedBooksCountAsync(string userName);
 
-        Task ReturnAsync(int id, string userName);
+        Task<string> ReturnAsync(int id, string userName);
 
         Task<IEnumerable<BorrowedBookServiceModel>> BorrowedAsync(int page);
     }

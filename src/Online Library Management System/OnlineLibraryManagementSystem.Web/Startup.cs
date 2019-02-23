@@ -37,17 +37,18 @@
                 .AddDbContext<OnlineLibraryManagementSystemDbContext>(options => options
                     .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.User.RequireUniqueEmail = true;
-            })
-           .AddDefaultUI(UIFramework.Bootstrap4)
-           .AddEntityFrameworkStores<OnlineLibraryManagementSystemDbContext>()
-           .AddDefaultTokenProviders();
+            services
+                .AddIdentity<User, IdentityRole>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.User.RequireUniqueEmail = true;
+                })
+               .AddDefaultUI(UIFramework.Bootstrap4)
+               .AddEntityFrameworkStores<OnlineLibraryManagementSystemDbContext>()
+               .AddDefaultTokenProviders();
 
             services.AddResponseCompression();
 

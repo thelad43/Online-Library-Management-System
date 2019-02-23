@@ -1,9 +1,9 @@
 ﻿namespace OnlineLibraryManagementSystem.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using OnlineLibraryManagementSystem.Services;
-    using OnlineLibraryManagementSystem.Web.Models;
-    using OnlineLibraryManagementSystem.Web.Models.Authors;
+    using Models;
+    using Models.Authors;
+    using Services;
     using System.Threading.Tasks;
 
     public class AuthorsController : Controller
@@ -15,6 +15,7 @@
             this.authors = authors;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(int currentPage = 1)
         {
             var authors = await this.authors.GetAllAsync(currentPage);
@@ -22,8 +23,8 @@
             var pageModel = new PageViewModel
             {
                 CurrentPage = currentPage,
-                Controller = "Authors",
-                Action = "Index",
+                Controller = nameof(AuthorsController),
+                Action = nameof(Index),
                 Count = await this.authors.GetAuthorsCountAsync()
             };
 

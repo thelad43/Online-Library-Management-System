@@ -2,8 +2,8 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using Models;
-    using OnlineLibraryManagementSystem.Services;
-    using OnlineLibraryManagementSystem.Web.Models.Books;
+    using Models.Books;
+    using Services;
     using System.Diagnostics;
     using System.Threading.Tasks;
 
@@ -35,14 +35,10 @@
         }
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
+            => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+            => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

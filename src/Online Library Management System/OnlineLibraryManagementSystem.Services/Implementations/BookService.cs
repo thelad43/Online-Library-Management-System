@@ -34,7 +34,7 @@
             await this.db.SaveChangesAsync();
         }
 
-        public async Task BorrowAsync(int id, string userName)
+        public async Task<string> BorrowAsync(int id, string userName)
         {
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
             var book = await this.db.Books.FindAsync(id);
@@ -54,6 +54,8 @@
             book.BorrowedTimes++;
 
             await this.db.SaveChangesAsync();
+
+            return book.Title;
         }
 
         public async Task<IEnumerable<BorrowedBookServiceModel>> BorrowedAsync(int page)
@@ -147,7 +149,7 @@
             return books;
         }
 
-        public async Task ReturnAsync(int id, string userName)
+        public async Task<string> ReturnAsync(int id, string userName)
         {
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
             var book = await this.db.Books.FindAsync(id);
@@ -160,6 +162,8 @@
             book.BorrowerId = null;
 
             await this.db.SaveChangesAsync();
+
+            return book.Title;
         }
     }
 }

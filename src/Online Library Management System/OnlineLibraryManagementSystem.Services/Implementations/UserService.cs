@@ -17,7 +17,8 @@
         private readonly OnlineLibraryManagementSystemDbContext db;
         private readonly UserManager<User> userManager;
 
-        public UserService(OnlineLibraryManagementSystemDbContext db,
+        public UserService(
+            OnlineLibraryManagementSystemDbContext db,
             UserManager<User> userManager)
         {
             this.db = db;

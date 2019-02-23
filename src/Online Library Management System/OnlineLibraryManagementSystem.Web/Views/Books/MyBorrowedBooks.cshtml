@@ -19,8 +19,9 @@
     <tbody>
         @foreach (var book in Model.Books)
         {
+            i++;
             <tr>
-                <th scope="row">@(++i)</th>
+                <th scope="row">@((Model.Page.CurrentPage - 1) * 10 + i)</th>
                 <td>@book.Title</td>
                 <td>
                     <a class="btn btn-info" asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">Details</a>
