@@ -29,5 +29,9 @@
         Task<string> ReturnAsync(int id, string userName);
 
         Task<IEnumerable<BorrowedBookServiceModel>> BorrowedAsync(int page);
+
+        Task<string> EditAsync(int id, string title, string description);
+
+        Task<string> DeleteAsync(int id);
     }
 }

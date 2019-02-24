@@ -1,14 +1,14 @@
 ﻿namespace OnlineLibraryManagementSystem.Web.Areas.Admin.Controllers
 {
+    using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using OnlineLibraryManagementSystem.Services;
-    using OnlineLibraryManagementSystem.Web.Areas.Admin.Models;
-    using OnlineLibraryManagementSystem.Web.Controllers;
-    using OnlineLibraryManagementSystem.Web.Infrastructure.Extensions;
-    using OnlineLibraryManagementSystem.Web.Models;
+    using Models;
+    using Services;
     using System.Linq;
     using System.Threading.Tasks;
+    using Web.Controllers;
+    using Web.Models;
 
     public class UsersController : BaseAdminController
     {
@@ -29,6 +29,7 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
+                Area = string.Empty,
                 Controller = nameof(UsersController),
                 Action = nameof(Index),
                 Count = await this.users.GetUsersCountAsync()

@@ -23,6 +23,7 @@
             var pageModel = new PageViewModel
             {
                 CurrentPage = currentPage,
+                Area = string.Empty,
                 Controller = nameof(AuthorsController),
                 Action = nameof(Index),
                 Count = await this.authors.GetAuthorsCountAsync()

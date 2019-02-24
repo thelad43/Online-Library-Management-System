@@ -85,6 +85,39 @@
                 .To<BookServiceModel>()
                 .FirstOrDefaultAsync();
 
+        public async Task<string> DeleteAsync(int id)
+        {
+            var book = await this.db.Books.FindAsync(id);
+
+            if (book == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            this.db.Books.Remove(book);
+
+            await this.db.SaveChangesAsync();
+
+            return book.Title;
+        }
+
+        public async Task<string> EditAsync(int id, string title, string description)
+        {
+            var book = await this.db.Books.FindAsync(id);
+
+            if (book == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            book.Title = title;
+            book.Description = description;
+
+            await this.db.SaveChangesAsync();
+
+            return book.Title;
+        }
+
         public async Task<IEnumerable<BookDetailsServiceModel>> GetAllAsync(int page)
             => await this.db
                 .Books

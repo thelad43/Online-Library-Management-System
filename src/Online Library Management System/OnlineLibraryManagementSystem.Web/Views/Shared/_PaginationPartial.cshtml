@@ -4,18 +4,18 @@
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item @(Model.CurrentPage == Model.PreviousPage ? "disabled" : "active")">
-                <a asp-area="" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-currentPage="@(Model.PreviousPage)" class="page-link" tabindex="-1">Previous</a>
+                <a asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-currentPage="@(Model.PreviousPage)" class="page-link" tabindex="-1">Previous</a>
             </li>
 
             @for (var i = 1; i <= @Model.TotalPages; i++)
             {
                 <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a asp-area="" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-currentPage="@i" class="page-link">@i</a>
+                    <a asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-currentPage="@i" class="page-link">@i</a>
                 </li>
             }
 
             <li class="page-item @(Model.CurrentPage == Model.NextPage ? "disabled" : "active")">
-                <a asp-area="" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-currentPage="@(Model.NextPage)" class="page-link">Next</a>
+                <a asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-currentPage="@(Model.NextPage)" class="page-link">Next</a>
             </li>
         </ul>
     </nav>

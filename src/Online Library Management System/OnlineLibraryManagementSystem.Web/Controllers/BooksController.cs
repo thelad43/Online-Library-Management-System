@@ -32,6 +32,7 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
+                Area = string.Empty,
                 Controller = nameof(BooksController),
                 Action = nameof(Index),
                 Count = await this.books.GetBooksCountAsync()
@@ -84,6 +85,7 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
+                Area = string.Empty,
                 Controller = nameof(BooksController),
                 Action = nameof(ByAuthor),
                 Count = await this.books.GetBooksByAuthorCountAsync(id)
@@ -157,6 +159,7 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
+                Area = string.Empty,
                 Controller = nameof(BooksController),
                 Action = nameof(MyBorrowedBooks),
                 Count = await this.books.GetMyBorrowedBooksCountAsync(userName)
@@ -179,6 +182,7 @@
             var page = new PageViewModel
             {
                 CurrentPage = currentPage,
+                Area = string.Empty,
                 Controller = nameof(BooksController),
                 Action = nameof(Borrowed),
                 Count = await this.books.GetBorrowedBooksCountAsync()

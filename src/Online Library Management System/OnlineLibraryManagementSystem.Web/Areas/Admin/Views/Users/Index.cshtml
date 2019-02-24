@@ -18,17 +18,19 @@
                     <th scope="col">#</th>
                     <th scope="col">UserName</th>
                     <th scope="col">Role</th>
+                    <th scope="col">Email</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var user in Model.Users)
                 {
                     i++;
-                    <tr>
-                        <th scope="row">@((Model.Page.CurrentPage - 1) * 10 + i)</th>
-                        <td>@user.UserName</td>
-                        <td>@user.Role</td>
-                    </tr>
+                <tr>
+                    <th scope="row">@((Model.Page.CurrentPage - 1) * 10 + i)</th>
+                    <td>@user.UserName</td>
+                    <td>@user.Role</td>
+                    <td>@user.Email</td>
+                </tr>
                 }
             </tbody>
         </table>
