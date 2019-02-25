@@ -91,9 +91,9 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Destroy(int id)
         {
-            var book = await this.books.DeleteAsync(int.Parse(id));
+            var book = await this.books.DeleteAsync(id);
 
             TempData.AddSuccessMessage($"Successfully deleted {book} book.");
 

@@ -47,14 +47,14 @@
                 .Where(u => u.AuthorBooks.Any())
                 .CountAsync();
 
-        public async Task<IEnumerable<AuthorServiceModel>> GetUsersAsync()
+        public async Task<IEnumerable<AuthorServiceModel>> GetNonAuthorsAsync()
             => await this.db
                 .Users
                 .Where(u => !u.AuthorBooks.Any())
                 .To<AuthorServiceModel>()
                 .ToListAsync();
 
-        public async Task<IEnumerable<UserAdminModel>> GetUsersAsync(int page)
+        public async Task<IEnumerable<UserAdminModel>> GetAsync(int page)
             => await this.db
                 .Users
                 .OrderBy(u => u.UserName)

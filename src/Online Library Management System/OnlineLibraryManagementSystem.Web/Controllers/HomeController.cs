@@ -22,7 +22,7 @@
         {
             var authorsCount = await this.users.GetAuthorsCountAsync();
             var booksCount = await this.books.GetBooksCountAsync();
-            var borrowedBooksCount = await this.books.GetBorrowedBooksCountAsync();
+            var borrowedBooksCount = await this.books.GetBorrowedCountAsync();
 
             var model = new HomeIndexViewModel
             {
@@ -34,8 +34,7 @@
             return View(model);
         }
 
-        public IActionResult Privacy()
-            => View();
+        public IActionResult Privacy() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

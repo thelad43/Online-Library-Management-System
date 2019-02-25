@@ -127,7 +127,7 @@
                 .To<BookDetailsServiceModel>()
                 .ToListAsync();
 
-        public async Task<int> GetBooksByAuthorCountAsync(string id)
+        public async Task<int> GetByAuthorCountAsync(string id)
             => await this.db
                 .Books
                 .Where(b => b.AuthorId == id)
@@ -138,13 +138,13 @@
                 .Books
                 .CountAsync();
 
-        public async Task<int> GetBorrowedBooksCountAsync()
+        public async Task<int> GetBorrowedCountAsync()
             => await this.db
                 .Books
                 .Where(b => b.BorrowerId != null)
                 .CountAsync();
 
-        public async Task<int> GetMyBorrowedBooksCountAsync(string userName)
+        public async Task<int> GetMyBorrowedCountAsync(string userName)
         {
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 

@@ -9,11 +9,11 @@
     {
         Task<int> GetAuthorsCountAsync();
 
-        Task<IEnumerable<AuthorServiceModel>> GetUsersAsync();
+        Task<IEnumerable<AuthorServiceModel>> GetNonAuthorsAsync();
 
         Task<string> AddAuthorAsync(string userId);
 
-        Task<IEnumerable<UserAdminModel>> GetUsersAsync(int page);
+        Task<IEnumerable<UserAdminModel>> GetAsync(int page);
 
         Task<int> GetUsersCountAsync();
 

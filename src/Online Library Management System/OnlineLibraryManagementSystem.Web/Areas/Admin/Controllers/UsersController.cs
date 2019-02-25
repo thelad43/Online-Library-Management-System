@@ -22,7 +22,7 @@
         [HttpGet]
         public async Task<IActionResult> Index(int currentPage = 1)
         {
-            var users = await this.users.GetUsersAsync(currentPage);
+            var users = await this.users.GetAsync(currentPage);
 
             users = await this.users.SetRoleToModelAsync(users);
 
@@ -47,7 +47,7 @@
         [HttpGet]
         public async Task<IActionResult> AddAuthor()
         {
-            var users = await this.users.GetUsersAsync();
+            var users = await this.users.GetNonAuthorsAsync();
 
             var model = new UsersFormListingAdminModel
             {

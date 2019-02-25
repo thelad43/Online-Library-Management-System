@@ -12,6 +12,6 @@
 <div style="margin-left: 450px">
     <form asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@Model.Id" method="post">
         <a asp-area="Admin" asp-controller="Books" asp-action="Index" class="btn btn-primary">Back</a>
-        <button asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</button>
+        <button asp-area="Admin" asp-controller="Books" asp-action="Destroy" asp-route-id="@Model.Id" class="btn btn-danger">Delete</button>
     </form>
 </div>

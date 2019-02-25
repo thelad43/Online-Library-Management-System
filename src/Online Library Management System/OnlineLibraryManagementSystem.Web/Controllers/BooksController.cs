@@ -49,10 +49,7 @@
 
         [HttpGet]
         [Authorize(Roles = AdministratorRole + "," + AuthorRole)]
-        public IActionResult Add()
-        {
-            return View();
-        }
+        public IActionResult Add() => View();
 
         [HttpPost]
         [Authorize(Roles = AdministratorRole + "," + AuthorRole)]
@@ -88,7 +85,7 @@
                 Area = string.Empty,
                 Controller = nameof(BooksController),
                 Action = nameof(ByAuthor),
-                Count = await this.books.GetBooksByAuthorCountAsync(id)
+                Count = await this.books.GetByAuthorCountAsync(id)
             };
 
             var author = await this.userManager.FindByIdAsync(books?.FirstOrDefault()?.AuthorId);
@@ -162,7 +159,7 @@
                 Area = string.Empty,
                 Controller = nameof(BooksController),
                 Action = nameof(MyBorrowedBooks),
-                Count = await this.books.GetMyBorrowedBooksCountAsync(userName)
+                Count = await this.books.GetMyBorrowedCountAsync(userName)
             };
 
             var model = new BorrowedBooksListingViewModel
@@ -185,7 +182,7 @@
                 Area = string.Empty,
                 Controller = nameof(BooksController),
                 Action = nameof(Borrowed),
-                Count = await this.books.GetBorrowedBooksCountAsync()
+                Count = await this.books.GetBorrowedCountAsync()
             };
 
             var model = new BorrowedBooksListingViewModel
