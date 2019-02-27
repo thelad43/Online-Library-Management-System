@@ -198,5 +198,21 @@
 
             return book.Title;
         }
+
+        public async Task<IEnumerable<BorrowedBookServiceModel>> SearchAsync(int page, string searchText)
+            => await this.db
+                .Books
+                .Where(b => b.Title.ToLower().Contains(searchText.ToLower()))
+                .OrderBy(b => b.Id)
+                .Skip((page - 1) * BooksOnPage)
+                .Take(BooksOnPage)
+                .To<BorrowedBookServiceModel>()
+                .ToListAsync();
+
+        public async Task<int> GetCountBySearchAsync(string searchText)
+            => await this.db
+                .Books
+                .Where(b => b.Title.ToLower().Contains(searchText.ToLower()))
+                .CountAsync();
     }
 }

@@ -33,5 +33,9 @@
         Task<string> EditAsync(int id, string title, string description);
 
         Task<string> DeleteAsync(int id);
+
+        Task<IEnumerable<BorrowedBookServiceModel>> SearchAsync(int page, string searchText);
+
+        Task<int> GetCountBySearchAsync(string searchText);
     }
 }

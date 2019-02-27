@@ -37,15 +37,16 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="AddAuthor">Add Author</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="Index">All Books</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Index">All Books</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="Index">All Books (Admin)</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="MyBorrowedBooks">My Borrowed</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Borrowed">All Borrowed</a>
                                 <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">All Users</a>
                             </div>
                         </li>
                     </ul>
                 }
-
-                @if (User.IsInRole(GlobalConstants.AuthorRole))
+                else if (User.IsInRole(GlobalConstants.AuthorRole))
                 {
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item dropdown">
@@ -54,6 +55,22 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="MyBorrowedBooks">My Borrowed</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                            </div>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Books
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="MyBorrowedBooks">My Borrowed</a>
                             </div>
                         </li>
                     </ul>
@@ -63,10 +80,7 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="MyBorrowedBooks">My Borrowed</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Search">Search</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

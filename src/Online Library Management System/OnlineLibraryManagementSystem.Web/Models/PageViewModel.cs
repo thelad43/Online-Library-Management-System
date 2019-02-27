@@ -33,5 +33,11 @@
         }
 
         public string Action { get; set; }
+
+        public string SearchText { get; set; }
+
+        public string SearchForBooks { get; set; }
+
+        public string SearchForAuthors { get; set; }
     }
 }

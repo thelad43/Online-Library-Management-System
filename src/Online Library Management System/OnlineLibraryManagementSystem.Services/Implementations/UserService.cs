@@ -54,7 +54,7 @@
                 .To<AuthorServiceModel>()
                 .ToListAsync();
 
-        public async Task<IEnumerable<UserAdminModel>> GetAsync(int page)
+        public async Task<IEnumerable<UserAdminModel>> GetAllAsync(int page)
             => await this.db
                 .Users
                 .OrderBy(u => u.UserName)
@@ -99,5 +99,21 @@
 
             return usersList;
         }
+
+        public async Task<IEnumerable<AuthorServiceModel>> SearchAsync(int page, string searchText)
+            => await this.db
+                .Users
+                .Where(u => u.UserName.ToLower().Contains(searchText.ToLower()))
+                .OrderBy(u => u.UserName)
+                .Skip((page - 1) * UsersCountOnPage)
+                .Take(UsersCountOnPage)
+                .To<AuthorServiceModel>()
+                .ToListAsync();
+
+        public async Task<int> GetCountBySearchAsync(string searchText)
+            => await this.db
+                .Users
+                .Where(u => u.UserName.ToLower().Contains(searchText.ToLower()))
+                .CountAsync();
     }
 }

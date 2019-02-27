@@ -13,10 +13,14 @@
 
         Task<string> AddAuthorAsync(string userId);
 
-        Task<IEnumerable<UserAdminModel>> GetAsync(int page);
+        Task<IEnumerable<UserAdminModel>> GetAllAsync(int page);
 
         Task<int> GetUsersCountAsync();
 
         Task<IEnumerable<UserAdminModel>> SetRoleToModelAsync(IEnumerable<UserAdminModel> users);
+
+        Task<IEnumerable<AuthorServiceModel>> SearchAsync(int page, string searchText);
+
+        Task<int> GetCountBySearchAsync(string searchText);
     }
 }

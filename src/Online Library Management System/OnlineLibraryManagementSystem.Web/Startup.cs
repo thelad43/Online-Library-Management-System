@@ -1,5 +1,6 @@
 ﻿namespace OnlineLibraryManagementSystem.Web
 {
+    using AutoMapper;
     using Common.Mapping;
     using Data;
     using Infrastructure.Extensions;
@@ -55,6 +56,8 @@
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddDomainServices();
+
+            services.AddAutoMapper();
 
             AutoMapperConfig.RegisterMappings(typeof(AuthorServiceModel).Assembly);
 

@@ -1,0 +1,136 @@
+﻿@model SearchViewModel
+
+@{
+    @if (Model.SearchText != string.Empty && Model.SearchText != null)
+    {
+        ViewData["Title"] = $"Search results for '{Model.SearchText}'";
+    }
+    else
+    {
+        ViewData["Title"] = $"Search";
+    }
+
+    var i = 0;
+}
+
+<br />
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <form asp-area="" asp-controller="Home" asp-action="SearchResults" method="get" class="form-inline my-2 my-lg-0">
+        <div class="col-md-4">
+            <input id="searchTextBox" asp-area="" asp-controller="Home" asp-action="SearchResults" asp-for="SearchText" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </div>
+        <div class="col-md-3 form-check">
+            <input asp-for="SearchForBooks" style="margin-right:8px" />
+            <label asp-for="SearchForBooks"></label>
+        </div>
+        <div class="col-md-3 form-check">
+            <input asp-for="SearchForAuthors" style="margin-right:8px" />
+            <label asp-for="SearchForAuthors"></label>
+        </div>
+    </form>
+</div>
+
+<br />
+
+@if (Model.Books.Any())
+{
+    <h4>Books found: </h4>
+    <br />
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.Books)
+            {
+                i++;
+                <tr>
+                    <th scope="row">@((Model.Page.CurrentPage - 1) * 10 + i)</th>
+                    <td>@book.Title</td>
+                    <td>
+                        <a class="btn btn-info" asp-area="" asp-controller="Books" asp-action="Details" asp-route-id="@book.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model.Page.CurrentPage >= Model.Page.TotalPages)
+    {
+        <br />
+        <br />
+    }
+}
+else
+{
+    if (Model.SearchText != string.Empty && Model.SearchText != null && Model.SearchForBooks)
+    {
+        <div>
+            <h4>There are no books searched.</h4>
+        </div>
+    }
+}
+
+@if (Model.Authors.Any())
+{
+    i = 0;
+    <h4>Authors found: </h4>
+    <br />
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Books count</th>
+                <th scope="col">View Books</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var author in Model.Authors)
+            {
+                i++;
+                <tr>
+                    <th scope="row">@((Model.Page.CurrentPage - 1) * 10 + i)</th>
+                    <td>@author.Name</td>
+                    <td>@author.BooksCount</td>
+                    <td>
+                        <a class="btn btn-info" asp-area="" asp-controller="Books" asp-action="ByAuthor" asp-route-id="@author.Id">Books</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    if (Model.SearchText != string.Empty && Model.SearchText != null && Model.SearchForAuthors)
+    {
+        <div>
+            <h4>There are no authors searched.</h4>
+        </div>
+    }
+}
+
+@if (Model.Page.CurrentPage >= Model.Page.TotalPages)
+{
+    <br />
+    <br />
+}
+
+@if (Model.SearchForAuthors || Model.SearchForBooks)
+{
+    @if (Model.Page.TotalPages > 1)
+    {
+        <partial name="_PaginationPartial" for="Page" />
+    }
+}

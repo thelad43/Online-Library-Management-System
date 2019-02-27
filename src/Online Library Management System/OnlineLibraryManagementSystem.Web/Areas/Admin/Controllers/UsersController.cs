@@ -22,7 +22,7 @@
         [HttpGet]
         public async Task<IActionResult> Index(int currentPage = 1)
         {
-            var users = await this.users.GetAsync(currentPage);
+            var users = await this.users.GetAllAsync(currentPage);
 
             users = await this.users.SetRoleToModelAsync(users);
 

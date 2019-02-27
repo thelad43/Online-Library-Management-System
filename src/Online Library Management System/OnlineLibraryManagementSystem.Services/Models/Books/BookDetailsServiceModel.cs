@@ -4,7 +4,7 @@
     using Common.Mapping;
     using OnlineLibraryManagementSystem.Models;
 
-    public class BookDetailsServiceModel : IMapFrom<Book>, IHaveCustomMappings
+    public class BookDetailsServiceModel : IMapFrom<Book>, IMapTo<BorrowedBookServiceModel>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
