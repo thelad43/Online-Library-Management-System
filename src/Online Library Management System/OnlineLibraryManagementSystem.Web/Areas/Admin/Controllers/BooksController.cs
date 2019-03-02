@@ -1,6 +1,7 @@
 ﻿namespace OnlineLibraryManagementSystem.Web.Areas.Admin.Controllers
 {
     using Infrastructure.Extensions;
+    using Infrastructure.Filters;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using Services;
@@ -62,13 +63,14 @@
         }
 
         [HttpPost]
+        [Log]
         public async Task<IActionResult> Edit(BookFormAdminModel model)
         {
             var book = await this.books.EditAsync(model.Id, model.Title, model.Description);
 
             TempData.AddSuccessMessage($"Successfully edited {book} book.");
 
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToActionExtensionMethod(nameof(Index));
         }
 
         [HttpGet]
@@ -91,13 +93,14 @@
         }
 
         [HttpPost]
+        [Log]
         public async Task<IActionResult> Destroy(int id)
         {
             var book = await this.books.DeleteAsync(id);
 
             TempData.AddSuccessMessage($"Successfully deleted {book} book.");
 
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToActionExtensionMethod(nameof(Index));
         }
     }
 }

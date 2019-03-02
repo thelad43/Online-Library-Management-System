@@ -25,6 +25,7 @@
             this.mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var authorsCount = await this.users.GetAuthorsCountAsync();
@@ -41,6 +42,7 @@
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Search([FromQuery]SearchViewModel model, int currentPage = 1)
         {
             if (model.SearchText == null)
@@ -94,8 +96,10 @@
             return View(viewModel);
         }
 
+        [HttpGet]
         public IActionResult Privacy() => View();
 
+        [HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
             => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

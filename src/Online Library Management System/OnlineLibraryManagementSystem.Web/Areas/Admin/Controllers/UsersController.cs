@@ -1,6 +1,7 @@
 ﻿namespace OnlineLibraryManagementSystem.Web.Areas.Admin.Controllers
 {
     using Infrastructure.Extensions;
+    using Infrastructure.Filters;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Models;
@@ -62,13 +63,14 @@
         }
 
         [HttpPost]
+        [Log]
         public async Task<IActionResult> AddAuthor(string userId)
         {
             var userName = await this.users.AddAuthorAsync(userId);
 
             TempData.AddSuccessMessage($"Successfully added role 'Author' to user {userName}.");
 
-            return this.RedirectToAction(
+            return this.RedirectToActionExtensionMethod(
                 nameof(HomeController.Index),
                 nameof(HomeController),
                 new { area = string.Empty });

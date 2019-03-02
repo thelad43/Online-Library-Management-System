@@ -1,6 +1,7 @@
 ﻿namespace OnlineLibraryManagementSystem.Web.Controllers
 {
     using Infrastructure.Extensions;
+    using Infrastructure.Filters;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,7 @@
 
         [HttpPost]
         [Authorize(Roles = AdministratorRole + "," + AuthorRole)]
+        [Log]
         public async Task<IActionResult> Add(AddBookFormModel model)
         {
             if (!ModelState.IsValid)
@@ -71,7 +73,7 @@
 
             TempData.AddSuccessMessage($"Successfully added book {model.Title} by {user.UserName}");
 
-            return this.RedirectToAction(nameof(Index));
+            return this.RedirectToActionExtensionMethod(nameof(Index));
         }
 
         [HttpGet]
@@ -124,7 +126,7 @@
 
             TempData.AddSuccessMessage($"Successfully borrowed {book} book.");
 
-            return RedirectToAction(nameof(MyBorrowedBooks));
+            return this.RedirectToActionExtensionMethod(nameof(MyBorrowedBooks));
         }
 
         [HttpGet]
@@ -142,7 +144,7 @@
 
             TempData.AddSuccessMessage($"Successfully returned {book} book to the library.");
 
-            return RedirectToAction(nameof(MyBorrowedBooks));
+            return this.RedirectToActionExtensionMethod(nameof(MyBorrowedBooks));
         }
 
         [HttpGet]
