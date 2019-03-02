@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OnlineLibraryManagementSystem.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace OnlineLibraryManagementSystem.Web.Areas.Identity.Pages.Account
@@ -17,6 +16,8 @@ namespace OnlineLibraryManagementSystem.Web.Areas.Identity.Pages.Account
         {
             _userManager = userManager;
         }
+
+        public bool ShowInvalid { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
@@ -32,9 +33,15 @@ namespace OnlineLibraryManagementSystem.Web.Areas.Identity.Pages.Account
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
+
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                //throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                ShowInvalid = true;
             }
 
             return Page();

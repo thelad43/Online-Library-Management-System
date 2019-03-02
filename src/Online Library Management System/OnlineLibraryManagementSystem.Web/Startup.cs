@@ -46,6 +46,7 @@
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                     options.User.RequireUniqueEmail = true;
+                    options.SignIn.RequireConfirmedEmail = true;
                 })
                .AddDefaultUI(UIFramework.Bootstrap4)
                .AddEntityFrameworkStores<OnlineLibraryManagementSystemDbContext>()
@@ -58,7 +59,7 @@
                     facebookOptions.AppId = this.Configuration["Authentication:Facebook:AppId"];
                     facebookOptions.AppSecret = this.Configuration["Authentication:Facebook:AppSecret"];
                 })
-                .AddGoogle(googleOptions => 
+                .AddGoogle(googleOptions =>
                 {
                     googleOptions.ClientId = this.Configuration["Authentication:Google:ClientId"];
                     googleOptions.ClientSecret = this.Configuration["Authentication:Google:ClientSecret"];
@@ -78,6 +79,9 @@
             services.AddAutoMapper();
 
             AutoMapperConfig.RegisterMappings(typeof(AuthorServiceModel).Assembly);
+
+            services.AddOptions();
+            services.Configure<EmailSettings>(this.Configuration.GetSection("EmailSettings"));
 
             services.AddMvc(options =>
             {

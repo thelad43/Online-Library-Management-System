@@ -16,11 +16,13 @@ namespace OnlineLibraryManagementSystem.Web.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<User> signInManager, UserManager<User> userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -30,6 +32,10 @@ namespace OnlineLibraryManagementSystem.Web.Areas.Identity.Pages.Account
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public bool ShowResend { get; set; }
+
+        public string UserId { get; set; }
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -73,7 +79,7 @@ namespace OnlineLibraryManagementSystem.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -90,6 +96,16 @@ namespace OnlineLibraryManagementSystem.Web.Areas.Identity.Pages.Account
                 }
                 else
                 {
+                    if (result.IsNotAllowed)
+                    {
+                        _logger.LogWarning("User email is not confirmed.");
+                        ModelState.AddModelError(string.Empty, "Email is not confirmed.");
+                        var user = await _userManager.FindByNameAsync(Input.UserName);
+                        UserId = user.Id;
+                        ShowResend = true;
+                        return Page();
+                    }
+
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
