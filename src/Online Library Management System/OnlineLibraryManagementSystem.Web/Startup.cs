@@ -51,6 +51,24 @@
                .AddEntityFrameworkStores<OnlineLibraryManagementSystemDbContext>()
                .AddDefaultTokenProviders();
 
+            services
+                .AddAuthentication()
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = this.Configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.AppSecret = this.Configuration["Authentication:Facebook:AppSecret"];
+                })
+                .AddGoogle(googleOptions => 
+                {
+                    googleOptions.ClientId = this.Configuration["Authentication:Google:ClientId"];
+                    googleOptions.ClientSecret = this.Configuration["Authentication:Google:ClientSecret"];
+                })
+                .AddMicrosoftAccount(microsoftOptions =>
+                {
+                    microsoftOptions.ClientId = this.Configuration["Authentication:Microsoft:ApplicationId"];
+                    microsoftOptions.ClientSecret = this.Configuration["Authentication:Microsoft:Password"];
+                });
+
             services.AddResponseCompression();
 
             services.AddRouting(options => options.LowercaseUrls = true);
