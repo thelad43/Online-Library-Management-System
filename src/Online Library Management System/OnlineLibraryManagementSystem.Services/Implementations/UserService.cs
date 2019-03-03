@@ -1,5 +1,6 @@
 ﻿namespace OnlineLibraryManagementSystem.Services.Implementations
 {
+    using Common;
     using Common.Mapping;
     using Data;
     using Microsoft.AspNetCore.Identity;
@@ -33,7 +34,7 @@
 
             if (user == null)
             {
-                throw new ArgumentException();
+                throw new InvalidOperationException(ExceptionMessages.UserNotFound);
             }
 
             await this.userManager.AddToRoleAsync(user, AuthorRole);
@@ -81,7 +82,7 @@
 
                 if (user == null)
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException(ExceptionMessages.UserNotFound);
                 }
 
                 var roles = await this.userManager.GetRolesAsync(user);
@@ -93,7 +94,7 @@
 
                 if (currentUserModel.Role == null)
                 {
-                    currentUserModel.Role = "User";
+                    currentUserModel.Role = UserRole;
                 }
             }
 

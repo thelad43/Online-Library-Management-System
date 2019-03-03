@@ -1,5 +1,6 @@
 ﻿namespace OnlineLibraryManagementSystem.Services.Implementations
 {
+    using Common;
     using Common.Mapping;
     using Data;
     using Microsoft.EntityFrameworkCore;
@@ -39,15 +40,20 @@
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
             var book = await this.db.Books.FindAsync(id);
 
-            if (user == null || book == null)
+            if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessages.UserNotFound);
+            }
+
+            if (book == null)
+            {
+                throw new InvalidOperationException(ExceptionMessages.BookNotFound);
             }
 
             // This book is already borrowed
             if (book.BorrowerId != null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessages.BookAlreadyBorrowed);
             }
 
             book.BorrowerId = user.Id;
@@ -91,7 +97,7 @@
 
             if (book == null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessages.BookNotFound);
             }
 
             this.db.Books.Remove(book);
@@ -107,7 +113,7 @@
 
             if (book == null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessages.BookNotFound);
             }
 
             book.Title = title;
@@ -150,7 +156,7 @@
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessages.UserNotFound);
             }
 
             var count = await this.db
@@ -167,7 +173,7 @@
 
             if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessages.UserNotFound);
             }
 
             var books = await this.db
@@ -187,9 +193,14 @@
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.UserName == userName);
             var book = await this.db.Books.FindAsync(id);
 
-            if (user == null || book == null)
+            if (user == null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ExceptionMessages.UserNotFound);
+            }
+
+            if (book == null)
+            {
+                throw new InvalidOperationException(ExceptionMessages.BookNotFound);
             }
 
             book.BorrowerId = null;
