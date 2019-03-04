@@ -83,7 +83,7 @@
 
             authorsPage4
                 .Should()
-                .HaveCount(0);
+                .BeEmpty();
         }
 
         [Fact]
