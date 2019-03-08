@@ -223,7 +223,8 @@
         public async Task<int> GetCountBySearchAsync(string searchText)
             => await this.db
                 .Books
-                .Where(b => b.Title.ToLower().Contains(searchText.ToLower()))
+                .Where(b => b.Title.ToLower()
+                .Contains(searchText.ToLower()))
                 .CountAsync();
     }
 }

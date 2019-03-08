@@ -405,7 +405,7 @@
         }
 
         [Fact]
-        public void MyBorrowedAsyncShoulThrowInvalidOperationExceptionIfUserIsNotFound()
+        public void MyBorrowedAsyncShouldThrowInvalidOperationExceptionIfUserIsNotFound()
         {
             var db = DbInfrastructure.GetDatabase();
 
@@ -420,7 +420,7 @@
         }
 
         [Fact]
-        public async Task MyBorrowedAsyncShoulReturnCorrectBooks()
+        public async Task MyBorrowedAsyncShouldReturnCorrectBooks()
         {
             var db = DbInfrastructure.GetDatabase();
 
@@ -503,6 +503,386 @@
             {
                 book.Should().Match<Book>(b => b.BorrowerId == user.Id);
             }
+        }
+
+        [Fact]
+        public void GetMyBorrowedCountAsyncShouldThrowInvalidOperationExceptionIfUserIsNotFound()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var bookService = new BookService(db);
+
+            Func<Task> func = async () => await bookService.GetMyBorrowedCountAsync("UsErname");
+
+            func
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(ExceptionMessages.UserNotFound);
+        }
+
+        [Fact]
+        public async Task GetMyBorrowedCountAsyncShouldReturnCorrectCount()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var user = new User
+            {
+                UserName = "Some User"
+            };
+
+            await db.AddAsync(user);
+            await db.SaveChangesAsync();
+
+            var bookService = new BookService(db);
+
+            for (var i = 0; i < 50; i++)
+            {
+                var book = new Book
+                {
+                    Title = $"Some Random Title {i}."
+                };
+
+                await db.AddAsync(book);
+
+                if (i < 10)
+                {
+                    await bookService.BorrowAsync(book.Id, user.UserName);
+                }
+            }
+
+            await db.SaveChangesAsync();
+
+            var myBorrowedBooksCount = await bookService.GetMyBorrowedCountAsync(user.UserName);
+
+            myBorrowedBooksCount.Should().Be(10);
+        }
+
+        [Fact]
+        public void ReturnAsyncShouldThrowInvalidOperationExceptionIfUserIsNotFound()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var bookService = new BookService(db);
+
+            Func<Task> func = async () => await bookService.ReturnAsync(1, "UseRID");
+
+            func
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(ExceptionMessages.UserNotFound);
+        }
+
+        [Fact]
+        public async Task ReturnAsyncShouldThrowInvalidOperationExceptionIfBookIsNotFound()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var bookService = new BookService(db);
+
+            var user = new User
+            {
+                UserName = "Test username"
+            };
+
+            await db.AddAsync(user);
+            await db.SaveChangesAsync();
+
+            Func<Task> func = async () => await bookService.ReturnAsync(1, user.UserName);
+
+            func
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(ExceptionMessages.BookNotFound);
+        }
+
+        [Fact]
+        public async Task ReturnAsyncShouldMarkBookAsReturned()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            for (var i = 0; i < 200; i++)
+            {
+                await db.AddAsync(new Book
+                {
+                    Title = $"book title {i}"
+                });
+            }
+
+            var user = new User
+            {
+                UserName = "Test user"
+            };
+
+            await db.AddAsync(user);
+
+            await db.SaveChangesAsync();
+
+            var bookService = new BookService(db);
+
+            var book = await db.Books.FirstOrDefaultAsync(b => b.Title.Contains("5"));
+
+            book.BorrowerId.Should().BeNull();
+
+            await bookService.BorrowAsync(book.Id, user.UserName);
+
+            book.BorrowerId.Should().Be(user.Id);
+
+            await bookService.ReturnAsync(book.Id, user.UserName);
+
+            book.BorrowerId.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task BorrowedAsyncShouldReturnOnlyBorrowedAsync()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var userNames = new List<string>();
+
+            for (var i = 0; i < 50; i++)
+            {
+                var user = new User
+                {
+                    UserName = $"User {i}"
+                };
+
+                await db.AddAsync(user);
+
+                userNames.Add(user.UserName);
+            }
+
+            await db.SaveChangesAsync();
+
+            var booksIds = new List<int>();
+
+            for (var i = 0; i < 250; i++)
+            {
+                var book = new Book
+                {
+                    Title = $"Book title {i}"
+                };
+
+                await db.AddAsync(book);
+
+                booksIds.Add(book.Id);
+            }
+
+            await db.SaveChangesAsync();
+
+            const int BorrowedBooksCount = 50;
+
+            var bookService = new BookService(db);
+
+            var borrowedBooksIndexes = new List<int>();
+
+            for (var i = 0; i < BorrowedBooksCount; i++)
+            {
+                var randomBookIndex = this.randomGenerator.Next(1, booksIds.Count);
+                var randomUserIndex = this.randomGenerator.Next(1, userNames.Count);
+
+                if (!borrowedBooksIndexes.Contains(randomBookIndex))
+                {
+                    borrowedBooksIndexes.Add(randomBookIndex);
+
+                    await bookService.BorrowAsync(booksIds[randomBookIndex], userNames[randomUserIndex]);
+                }
+                else
+                {
+                    var newBook = new Book
+                    {
+                        Title = $"Some new {i} book"
+                    };
+
+                    await db.AddAsync(newBook);
+                    await db.SaveChangesAsync();
+
+                    await bookService.BorrowAsync(newBook.Id, userNames[randomUserIndex]);
+                }
+            }
+
+            for (var i = 1; i <= 5; i++)
+            {
+                var borrowedBooks = await bookService.BorrowedAsync(i);
+
+                borrowedBooks
+                    .Should()
+                    .HaveCount(GlobalConstants.BooksOnPage);
+            }
+
+            var nonExistingBorrowedBooks = await bookService.BorrowedAsync(6);
+
+            nonExistingBorrowedBooks
+                .Should()
+                .BeEmpty();
+        }
+
+        [Fact]
+        public void EditAsyncShouldThrowInvalidOperationExceptionIfBookIsNotFound()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var bookService = new BookService(db);
+
+            Func<Task> func = async () => await bookService.EditAsync(5, "New Title", "new descr");
+
+            func
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(ExceptionMessages.BookNotFound);
+        }
+
+        [Fact]
+        public async Task EditAsyncShouldEditBook()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var bookService = new BookService(db);
+
+            var book = new Book
+            {
+                Title = "Title",
+                Description = "Description"
+            };
+
+            await db.AddAsync(book);
+            await db.SaveChangesAsync();
+
+            const string EditedTitle = "Edited Title";
+            const string EditedDescription = "Edited Description";
+
+            await bookService.EditAsync(book.Id, EditedTitle, EditedDescription);
+
+            book
+                .Title
+                .Should()
+                .Be(EditedTitle);
+
+            book
+                .Description
+                .Should()
+                .Be(EditedDescription);
+        }
+
+        [Fact]
+        public void DeleteAsyncShouldThrowInvalidOperationExceptionIfBookIsNotFound()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var bookService = new BookService(db);
+
+            Func<Task> func = async () => await bookService.DeleteAsync(666);
+
+            func
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(ExceptionMessages.BookNotFound);
+        }
+
+        [Fact]
+        public async Task DeleteAsyncShouldDeleteBook()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            var bookService = new BookService(db);
+
+            var book = new Book
+            {
+                Title = "book title",
+                Description = "book description"
+            };
+
+            await db.AddAsync(book);
+            await db.SaveChangesAsync();
+
+            await bookService.DeleteAsync(book.Id);
+
+            book = await db.Books.FirstOrDefaultAsync();
+
+            book.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task SearchAsyncShouldReturnBooksWhichTitleContainsSeacrhText()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            for (var i = 0; i < 50; i++)
+            {
+                await db.AddAsync(new Book
+                {
+                    Title = $"Title {i}"
+                });
+            }
+
+            for (var i = 0; i < 150; i++)
+            {
+                await db.AddAsync(new Book
+                {
+                    Title = $"asdf {i}"
+                });
+            }
+
+            await db.SaveChangesAsync();
+
+            var bookService = new BookService(db);
+
+            const string SearchedText = "ti";
+
+            for (var i = 1; i <= 5; i++)
+            {
+                var searchedBooks = await bookService.SearchAsync(i, SearchedText);
+
+                searchedBooks
+                    .Should()
+                    .HaveCount(GlobalConstants.BooksOnPage);
+
+                foreach (var book in searchedBooks)
+                {
+                    book
+                        .Title
+                        .ToLower()
+                        .Should()
+                        .Contain(SearchedText);
+                }
+            }
+
+            var nonExistingBooks = await bookService.SearchAsync(6, SearchedText);
+
+            nonExistingBooks.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task GetCountBySearchAsyncShouldReturnCorrectCount()
+        {
+            var db = DbInfrastructure.GetDatabase();
+
+            const int SearchedTitlesCount = 50;
+
+            for (var i = 0; i < SearchedTitlesCount; i++)
+            {
+                await db.AddAsync(new Book
+                {
+                    Title = $"Title {i}"
+                });
+            }
+
+            for (var i = 0; i < 150; i++)
+            {
+                await db.AddAsync(new Book
+                {
+                    Title = $"asdf {i}"
+                });
+            }
+
+            await db.SaveChangesAsync();
+
+            var bookService = new BookService(db);
+
+            const string SearchedText = "ti";
+
+            var count = await bookService.GetCountBySearchAsync(SearchedText);
+
+            count.Should().Be(SearchedTitlesCount);
         }
     }
 }
